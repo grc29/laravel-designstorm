@@ -10,38 +10,33 @@ Design Storm - Inspiration for Developers
     <div id="results">
       <div>
         <div class="search-container">
-          <input class="search" type="text" value="Results" placeholder="Search">
+          <form action="/results" method="POST">
+            {{ csrf_field() }}
+            <input class="search" type="text" value="{{$keyword}}" placeholder="Search" name="search">
+          </form>
         </div>
         <div class="boxes">
           <div class="row">
-            <div class="col-md-3">
-              <div class="box">
-                <div style="position: relative; background: url('https://mir-s3-cdn-cf.behance.net/projects/202/4c23c557876077.Y3JvcCwxMjIyLDk1Niw4Nyww.jpg') no-repeat center center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover; height: 200px;">
-                  <div class="add-btn "><i class="fa fa-check" aria-hidden="true"></i></div>
+            @if(count($filteredData) >= 1)
+              @foreach($filteredData as $inspiration)
+              <div class="col-md-3">
+                <div class="box" style="margin-bottom: 50px;">
+                <div style="position: relative; background: url('{{ $inspiration->covers->{'202'} }}') no-repeat center center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover; height: 200px;">
+                  @php
+                  $codedUrl = urlencode($inspiration->covers->{'202'})
+                  @endphp
+                  <a href="/projects/inspiration/{{$inspiration->id}}/add?image_url={{$codedUrl}}">
+                    <div class="add-btn @if(in_array($inspiration->id, $imageInfoArray)) active @endif">
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                    </div>
+                  </a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-3">
-              <div class="box">
-                <div style="position: relative; background: url('https://mir-s3-cdn-cf.behance.net/projects/202/4c23c557876077.Y3JvcCwxMjIyLDk1Niw4Nyww.jpg') no-repeat center center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover; height: 200px;">
-                  <div class="add-btn "><i class="fa fa-check" aria-hidden="true"></i></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="box">
-                <div style="position: relative; background: url('https://mir-s3-cdn-cf.behance.net/projects/202/4c23c557876077.Y3JvcCwxMjIyLDk1Niw4Nyww.jpg') no-repeat center center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover; height: 200px;">
-                  <div class="add-btn "><i class="fa fa-check" aria-hidden="true"></i></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="box">
-                <div style="position: relative; background: url('https://mir-s3-cdn-cf.behance.net/projects/202/4c23c557876077.Y3JvcCwxMjIyLDk1Niw4Nyww.jpg') no-repeat center center;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover; height: 200px;">
-                  <div class="add-btn "><i class="fa fa-check" aria-hidden="true"></i></div>
-                </div>
-              </div>
-            </div>
+              @endforeach
+            @else
+              <h1>Sorry, no results found.</h1>
+            @endif
           </div>
         </div>
       </div>

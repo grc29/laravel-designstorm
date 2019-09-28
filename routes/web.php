@@ -11,26 +11,25 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages/home');
-});
+// Accounts
+Route::get('/account', 'AccountController@index');
+Route::get('/account/projects', 'ProjectController@index');
+Route::get('/account/projects/create', 'ProjectController@create');
+Route::post('/account/projects', 'ProjectController@store');
+Route::get('/account/projects/{id}', 'ProjectController@show');
+Route::get('/account/projects/{id}/edit', 'ProjectController@edit');
+Route::put('/account/projects/{id}', 'ProjectController@update');
+Route::get('/account/projects/{id}/delete', 'ProjectController@destroy');
 
-Route::get('/register', function() {
-    return view('pages/register');
-});
+// Pages
+Route::get('/', 'PageController@index');
+Route::post('/results', 'PageController@results');
+Route::get('/search', 'PageController@index');
+Route::get('/search/{keyword}', 'PageController@search');
 
-Route::get('/login', function() {
-    return view('pages/login');
-});
+// Inspirations
+Route::get('/projects/inspiration/{image_info}/add', 'InspirationController@create')->middleware('auth');
+Route::get('/projects/inspiration/{image_info}/delete', 'InspirationController@destroy')->middleware('auth');
 
-Route::get('/results', function() {
-    return view('pages/results');
-});
-
-Route::get('/account', function() {
-    return view('/account/dashboard');
-});
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
